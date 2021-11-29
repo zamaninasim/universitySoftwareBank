@@ -1,4 +1,4 @@
-package ir.maktab;
+package ir.maktab.model;
 
 public class Person {
     private String name;
