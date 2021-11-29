@@ -1,5 +1,7 @@
 package ir.maktab.model;
 
+import ir.maktab.date.Date;
+
 public class Borrow {
     private Disc disc;
     private Date date;
