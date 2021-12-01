@@ -1,6 +1,5 @@
 package ir.maktab.dao;
 
-import ir.maktab.model.Disc;
 import ir.maktab.model.Person;
 
 import java.sql.PreparedStatement;
