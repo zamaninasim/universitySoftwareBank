@@ -1,11 +1,18 @@
 package ir.maktab;
 
+import ir.maktab.date.Date;
+import ir.maktab.date.ValidationDateInput;
+import ir.maktab.model.Borrow;
+import ir.maktab.model.Disc;
+import ir.maktab.model.Person;
+
 import java.util.Scanner;
 
 public class Main {
 
 
     public static void main(String[] args) {
+        ValidationDateInput validationDateInput = new ValidationDateInput();
         System.out.println("Number of events & fine amount");
         Scanner scanner = new Scanner(System.in);
         String data = scanner.nextLine();
@@ -19,8 +26,12 @@ public class Main {
             int day = Integer.parseInt(userInformation[0]);
             int month = Integer.parseInt(userInformation[1]);
             int year = Integer.parseInt(userInformation[2]);
-            String memberName=userInformation[3];
+            String memberName = userInformation[3];
             String softwareName = userInformation[4];
+            Person person = new Person(memberName);
+            Disc disc = new Disc(softwareName);
+            Date date = new Date(day, month, year);
+            Borrow borrow = new Borrow(disc,date,person);
         }
 
 
