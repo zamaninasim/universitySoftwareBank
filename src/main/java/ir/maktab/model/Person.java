@@ -31,12 +31,12 @@ public class Person {
     }
 
     public void borrow(Disc disc, Date date) {
-        Borrow borrow = new Borrow(disc, date);
+        Borrow borrow = new Borrow(disc, date,this);
         borrowed.add(borrow);
     }
 
     public void deliver(Disc disc, Date date) {
-        Borrow borrow = new Borrow(disc, date);
+        Borrow borrow = new Borrow(disc, date,this);
         borrowed.remove(borrow);
     }
 }
