@@ -2,20 +2,20 @@ package ir.maktab;
 
 import ir.maktab.dao.BorrowDao;
 import ir.maktab.date.Date;
-import ir.maktab.date.ValidationDateInput;
 import ir.maktab.model.Borrow;
 import ir.maktab.model.Disc;
 import ir.maktab.model.Person;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Main {
 
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        ValidationDateInput validationDateInput = new ValidationDateInput();
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         BorrowDao borrowDao = new BorrowDao();
+        Date date = new Date();
         System.out.println("Number of events & fine amount");
         Scanner scanner = new Scanner(System.in);
         String data = scanner.nextLine();
@@ -33,12 +33,13 @@ public class Main {
             String softwareName = userInformation[4];
             Person person = new Person(memberName);
             Disc disc = new Disc(softwareName);
-            Date date = new Date(day, month, year);
-            Borrow borrow = new Borrow(disc, date, person);
+            Date inputDate = new Date(day, month, year);
+            Borrow borrow = new Borrow(disc, inputDate, person);
             if (!borrowDao.isMemberBorrowDisc(memberName, softwareName)) {
                 borrowDao.save(borrow);
             } else {
-                System.out.println("?");
+                String memberBorrowDate = borrowDao.findMemberBorrowDate(memberName, softwareName);
+                Long lateDays = date.CalculateLateDays(memberBorrowDate, inputDate.toString());
             }
 
 

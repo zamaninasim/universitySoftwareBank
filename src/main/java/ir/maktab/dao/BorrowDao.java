@@ -34,4 +34,17 @@ public class BorrowDao extends BaseDao {
         }
         return false;
     }
+
+    public String findMemberBorrowDate(String member, String disc) throws SQLException {
+        String sqlQuery = "SELECT date FROM borrows  WHERE member = ? AND disc=?";
+        PreparedStatement statement = getConnection().prepareStatement(sqlQuery);
+        statement.setString(1, member);
+        statement.setString(2, disc);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String date =resultSet.getString("date");
+            return date;
+        }
+        return null;
+    }
 }

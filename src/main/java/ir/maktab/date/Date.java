@@ -1,5 +1,9 @@
 package ir.maktab.date;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
+
 public class Date {
     private int day;
     private int month;
@@ -14,29 +18,35 @@ public class Date {
         this.year = year;
     }
 
-
-
-  /*  public void nextDay() {
-        if (month >= 1 && month <= 6) {
-            if (day == 31) {
-                day = 1;
-                month = month + 1;
-            } else setDay(getDay() + 1);
-
-        } else if (month > 6 && month < 12) {
-            if (day == 30) {
-                day = 1;
-                month = month + 1;
-            } else day = day + 1;
-        } else if (month == 12) {
-            if (day == 29) {
-                day = 1;
-                month = 1;
-                year = year + 1;
-            } else day = day + 1;
+    public boolean isValidDate(int day, int month, int year) {
+        boolean check = false;
+        if (year <= 9999 && year >= 1 && month <= 12 && month >= 1) {
+            if (month >= 1 && month <= 6) {
+                if (day >= 1 && day <= 31) {
+                    check = true;
+                } else
+                    check = false;
+            } else if (month > 6 && month < 12) {
+                if (day >= 1 && day <= 30) {
+                    check = true;
+                } else check = false;
+            } else {
+                if (day >= 1 && day <= 29) {
+                    check = true;
+                } else
+                    check = false;
+            }
         }
+        return check;
+    }
 
-    }*/
+    public Long CalculateLateDays(String borrowingDate, String returnDate) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d");
+        java.util.Date borrowingTime = dateFormat.parse(borrowingDate);
+        java.util.Date returnTime = dateFormat.parse(returnDate);
+        long difference = returnTime.getTime() - borrowingTime.getTime();
+        return TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+    }
 
     @Override
     public String toString() {
