@@ -24,7 +24,7 @@ public class BorrowDao extends BaseDao {
     }
 
     public boolean isMemberBorrowDisc(String member, String disc) throws SQLException {
-        String sqlQuery = "SELECT * FROM discs  WHERE name = ? AND disc=?";
+        String sqlQuery = "SELECT * FROM borrows  WHERE member = ? AND disc=?";
         PreparedStatement statement = getConnection().prepareStatement(sqlQuery);
         statement.setString(1, member);
         statement.setString(2, disc);

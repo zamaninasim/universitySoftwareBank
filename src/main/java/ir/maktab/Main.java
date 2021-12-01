@@ -34,8 +34,12 @@ public class Main {
             Person person = new Person(memberName);
             Disc disc = new Disc(softwareName);
             Date date = new Date(day, month, year);
-            Borrow borrow = new Borrow(disc,date,person);
-            borrowDao.save(borrow);
+            Borrow borrow = new Borrow(disc, date, person);
+            if (!borrowDao.isMemberBorrowDisc(memberName, softwareName)) {
+                borrowDao.save(borrow);
+            } else {
+                System.out.println("?");
+            }
 
 
         }
