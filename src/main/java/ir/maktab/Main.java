@@ -1,18 +1,21 @@
 package ir.maktab;
 
+import ir.maktab.dao.BorrowDao;
 import ir.maktab.date.Date;
 import ir.maktab.date.ValidationDateInput;
 import ir.maktab.model.Borrow;
 import ir.maktab.model.Disc;
 import ir.maktab.model.Person;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ValidationDateInput validationDateInput = new ValidationDateInput();
+        BorrowDao borrowDao = new BorrowDao();
         System.out.println("Number of events & fine amount");
         Scanner scanner = new Scanner(System.in);
         String data = scanner.nextLine();
@@ -32,6 +35,8 @@ public class Main {
             Disc disc = new Disc(softwareName);
             Date date = new Date(day, month, year);
             Borrow borrow = new Borrow(disc,date,person);
+            borrowDao.save(borrow);
+
 
         }
 

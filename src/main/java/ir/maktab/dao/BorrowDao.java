@@ -4,6 +4,7 @@ import ir.maktab.model.Borrow;
 import ir.maktab.model.Person;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BorrowDao extends BaseDao {
@@ -17,8 +18,20 @@ public class BorrowDao extends BaseDao {
             PreparedStatement statement = getConnection().prepareStatement(sqlQuery);
             statement.setString(1, borrow.getPerson().getName());
             statement.setString(2, borrow.getDisc().getName());
-            statement.setString(2, borrow.getDate().toString());
+            statement.setString(3, borrow.getDate().toString());
             int resultSet = statement.executeUpdate();
         }
+    }
+
+    public boolean isMemberBorrowDisc(String member, String disc) throws SQLException {
+        String sqlQuery = "SELECT * FROM discs  WHERE name = ? AND disc=?";
+        PreparedStatement statement = getConnection().prepareStatement(sqlQuery);
+        statement.setString(1, member);
+        statement.setString(2, disc);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return true;
+        }
+        return false;
     }
 }
