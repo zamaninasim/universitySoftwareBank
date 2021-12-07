@@ -13,6 +13,10 @@ public class Borrow {
         this.person = person;
     }
 
+    public Borrow() {
+
+    }
+
     public Disc getDisc() {
         return disc;
     }
@@ -37,8 +41,25 @@ public class Borrow {
         this.person = person;
     }
 
-    private boolean isLate(Date deliveryDate){
-        //TODO
-        return false;
+
+    public boolean isLate(int borrowDays) {
+        return borrowDays > 7;
+    }
+
+    public int calculateBorrowedDays(Date deliveryDate) {
+        int count = 0;
+        while (!date.equals(deliveryDate)) {
+            date.nextDay();
+            count++;
+        }
+        return count;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Borrow{" +
+                "disc=" + disc +
+                '}';
     }
 }

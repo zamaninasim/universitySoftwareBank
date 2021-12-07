@@ -1,6 +1,8 @@
 package ir.maktab.dao;
 
+import ir.maktab.date.Date;
 import ir.maktab.model.Borrow;
+import ir.maktab.model.Disc;
 import ir.maktab.model.Person;
 
 import java.sql.PreparedStatement;
@@ -35,15 +37,25 @@ public class BorrowDao extends BaseDao {
         return false;
     }
 
-    public String findMemberBorrowDate(String member, String disc) throws SQLException {
-        String sqlQuery = "SELECT date FROM borrows  WHERE member = ? AND disc=?";
+    public Borrow findMemberBorrow(String member, String disc) throws SQLException {
+        String sqlQuery = "SELECT * FROM borrows  WHERE member = ? AND disc=?";
         PreparedStatement statement = getConnection().prepareStatement(sqlQuery);
         statement.setString(1, member);
         statement.setString(2, disc);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            String date =resultSet.getString("date");
-            return date;
+            String memberName = resultSet.getString("member");
+            String discName = resultSet.getString("disc");
+            String date = resultSet.getString("date");
+            Disc borrowedDisc = new Disc(discName);
+            Person person = new Person(memberName);
+            String[] splitDate = date.split("/");
+            int year = Integer.parseInt(splitDate[0]);
+            int month = Integer.parseInt(splitDate[1]);
+            int day = Integer.parseInt(splitDate[2]);
+            Date borrowedDate = new Date(year, month, day);
+            Borrow borrow = new Borrow(borrowedDisc, borrowedDate, person);
+            return borrow;
         }
         return null;
     }

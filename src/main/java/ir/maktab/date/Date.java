@@ -1,52 +1,64 @@
 package ir.maktab.date;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 public class Date {
-    private int day;
-    private int month;
     private int year;
+    private int month;
+    private int day;
 
     public Date() {
     }
 
-    public Date(int day, int month, int year) {
-        this.day = day;
-        this.month = month;
+    public Date(int year, int month, int day) {
         this.year = year;
+        this.month = month;
+        this.day = day;
     }
 
-    public boolean isValidDate(int day, int month, int year) {
-        boolean check = false;
-        if (year <= 9999 && year >= 1 && month <= 12 && month >= 1) {
-            if (month >= 1 && month <= 6) {
-                if (day >= 1 && day <= 31) {
-                    check = true;
-                } else
-                    check = false;
-            } else if (month > 6 && month < 12) {
-                if (day >= 1 && day <= 30) {
-                    check = true;
-                } else check = false;
-            } else {
-                if (day >= 1 && day <= 29) {
-                    check = true;
-                } else
-                    check = false;
+    public Date nextDay() {
+        day += 1;
+        if (month < 7) {
+            if (day - 1 == 31) {
+                day = 1;
+                month += 1;
+            }
+        } else if (month == 12) {
+            if (day - 1 == 29) {
+                day = 1;
+                year += 1;
+                month = 1;
+            }
+        } else {
+            if (day - 1 == 30) {
+                day = 1;
+                month += 1;
             }
         }
-        return check;
+        return this;
     }
 
-    public Long CalculateLateDays(String borrowingDate, String returnDate) throws ParseException {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Date date = (Date) o;
+        return day == date.day && month == date.month && year == date.year;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, month, year);
+    }
+
+    /*public Long calculateDaysBetweenTowDate(String borrowingDate, String returnDate) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d");
         java.util.Date borrowingTime = dateFormat.parse(borrowingDate);
         java.util.Date returnTime = dateFormat.parse(returnDate);
         long difference = returnTime.getTime() - borrowingTime.getTime();
         return TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
-    }
+    }*/
+
 
     @Override
     public String toString() {

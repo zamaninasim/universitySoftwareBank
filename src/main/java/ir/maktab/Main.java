@@ -8,6 +8,8 @@ import ir.maktab.model.Person;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -15,60 +17,60 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         BorrowDao borrowDao = new BorrowDao();
+        Borrow borrow = new Borrow();
         Date date = new Date();
+        Person person = new Person();
+        Map<String, Long> fines = new HashMap<>();
+
         System.out.println("Number of events & fine amount");
         Scanner scanner = new Scanner(System.in);
-        String data = scanner.nextLine();
-        String[] eventsAndFine = data.split(" ");
+        String[] eventsAndFine = scanner.nextLine().split(" ");
         int events = Integer.parseInt(eventsAndFine[0]);
         long fine = Long.parseLong(eventsAndFine[1]);
+
         for (int i = 0; i < events; i++) {
             System.out.println("enter date,member name,software name");
-            String information = scanner.nextLine();
-            String[] userInformation = information.split(" ");
-            int day = Integer.parseInt(userInformation[0]);
-            int month = Integer.parseInt(userInformation[1]);
-            int year = Integer.parseInt(userInformation[2]);
-            String memberName = userInformation[3];
-            String softwareName = userInformation[4];
-            Person person = new Person(memberName);
+            String[] borrowInformation = scanner.nextLine().split(" ");
+            int year = Integer.parseInt(borrowInformation[0]);
+            int month = Integer.parseInt(borrowInformation[1]);
+            int day = Integer.parseInt(borrowInformation[2]);
+            String memberName = borrowInformation[3];
+            String softwareName = borrowInformation[4];
+
+            Person member = new Person(memberName);
             Disc disc = new Disc(softwareName);
-            Date inputDate = new Date(day, month, year);
-            Borrow borrow = new Borrow(disc, inputDate, person);
+            Date inputDate = new Date(year,month,day);
+            Borrow borrowSoftware = new Borrow(disc, inputDate, member);
+
             if (!borrowDao.isMemberBorrowDisc(memberName, softwareName)) {
-                borrowDao.save(borrow);
+                borrowDao.save(borrowSoftware);
+                member.borrow(borrowSoftware.getDisc(), borrowSoftware.getDate()); //add borrow to list
+
             } else {
-                String memberBorrowDate = borrowDao.findMemberBorrowDate(memberName, softwareName);
-                Long lateDays = date.CalculateLateDays(memberBorrowDate, inputDate.toString());
+                Borrow returnSoftware = new Borrow(disc, inputDate, member);
+                Borrow memberBorrow = borrowDao.findMemberBorrow(memberName, softwareName);
+                int borrowDays = memberBorrow.calculateBorrowedDays(returnSoftware.getDate());
+                System.out.println("borrow days:" + borrowDays);
+                boolean late = memberBorrow.isLate(borrowDays);
+
+                if (late) {
+                    long personFines = borrowDays * fine;
+                    member.setLateDays(personFines);
+                    fines.put(member.getName(), member.getLateDaysFine());
+                } else {
+                    member.setLateDays(0L);
+                    fines.put(member.getName(), member.getLateDaysFine());
+                }
+                member.deliver(returnSoftware.getDisc(), returnSoftware.getDate());
+
             }
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*        ValidationDateInput validationDateInput = new ValidationDateInput();
-        Scanner scanner = new Scanner(System.in);
-        int year = scanner.nextInt();
-        int month = scanner.nextInt();
-        int day = scanner.nextInt();
-        if (validationDateInput.isValidDate(day, month, year)) {
-            Date date = new Date(day, month, year);
-            System.out.println(date);
-        } else {
-            System.out.println("invalid");
-        }*/
-
+        System.out.println("for get repots enter 1:");
+        int report = scanner.nextInt();
+        if (report==1){
+            System.out.println("fines:");
+            fines.forEach((key, value) -> System.out.println(key + ":" + value));
+            System.out.println("borrowed disc:");
+            person.getBorrowed().forEach(System.out::println);}
     }
 }
