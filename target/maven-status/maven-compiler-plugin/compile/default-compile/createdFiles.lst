@@ -1,0 +1,8 @@
+ir\maktab\dao\BorrowDao.class
+ir\maktab\dao\BaseDao.class
+ir\maktab\model\Person.class
+ir\maktab\date\Date.class
+ir\maktab\Main.class
+ir\maktab\model\Borrow.class
+ir\maktab\model\Bank.class
+ir\maktab\model\Disc.class
