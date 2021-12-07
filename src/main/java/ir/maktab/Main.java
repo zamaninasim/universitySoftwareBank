@@ -1,7 +1,7 @@
 package ir.maktab;
 
 import ir.maktab.dao.BorrowDao;
-import ir.maktab.date.Date;
+import ir.maktab.model.date.Date;
 import ir.maktab.model.Borrow;
 import ir.maktab.model.Disc;
 import ir.maktab.model.Person;
@@ -62,7 +62,6 @@ public class Main {
                     fines.put(member.getName(), member.getLateDaysFine());
                 }
                 member.deliver(returnSoftware.getDisc(), returnSoftware.getDate());
-
             }
         }
         System.out.println("for get repots enter 1:");

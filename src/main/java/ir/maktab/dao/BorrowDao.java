@@ -1,6 +1,6 @@
 package ir.maktab.dao;
 
-import ir.maktab.date.Date;
+import ir.maktab.model.date.Date;
 import ir.maktab.model.Borrow;
 import ir.maktab.model.Disc;
 import ir.maktab.model.Person;

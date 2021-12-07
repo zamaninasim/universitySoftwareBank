@@ -1,6 +1,6 @@
 package ir.maktab.model;
 
-import ir.maktab.date.Date;
+import ir.maktab.model.date.Date;
 
 import java.util.*;
 

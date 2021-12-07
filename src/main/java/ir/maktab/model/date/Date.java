@@ -1,4 +1,4 @@
-package ir.maktab.date;
+package ir.maktab.model.date;
 
 import java.util.Objects;
 
@@ -13,6 +13,30 @@ public class Date {
     public Date(int year, int month, int day) {
         this.year = year;
         this.month = month;
+        this.day = day;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
         this.day = day;
     }
 
@@ -50,14 +74,6 @@ public class Date {
     public int hashCode() {
         return Objects.hash(day, month, year);
     }
-
-    /*public Long calculateDaysBetweenTowDate(String borrowingDate, String returnDate) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d");
-        java.util.Date borrowingTime = dateFormat.parse(borrowingDate);
-        java.util.Date returnTime = dateFormat.parse(returnDate);
-        long difference = returnTime.getTime() - borrowingTime.getTime();
-        return TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
-    }*/
 
 
     @Override
